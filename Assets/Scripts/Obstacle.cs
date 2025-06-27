@@ -4,6 +4,16 @@ using System.Collections.Generic;
 
 public class Obstacle : MonoBehaviour
 {
+    [SerializeField] private List<Vector3> _movePositions;
+    [SerializeField] private float moveSpeed;
+    [SerializeField]   private float rotationSpeed = 1000f;
+    [SerializeField] private int _startIndex;
+
+    private Vector3 moveStartPos, moveEndPos, moveDirection;
+    private float moveDistance, moveMagnitude;
+    private float currentMoveDistance;
+    private int moveStartIndex, moveEndIndex, totalMovePos;
+    
 
     private bool hasGameFinished;
 
@@ -11,7 +21,7 @@ public class Obstacle : MonoBehaviour
     private void Start()
     {
         hasGameFinished = false;
-
+        
         totalMovePos = _movePositions.Count;
         moveStartIndex = _startIndex;
         moveMagnitude = 1;
@@ -34,15 +44,6 @@ public class Obstacle : MonoBehaviour
         GameManager.Instance.GameEnded -= OnGameEnded;
     }
 
-
-    [SerializeField] private List<Vector3> _movePositions;
-    [SerializeField] private float moveSpeed;
-    [SerializeField] private int _startIndex;
-
-    private Vector3 moveStartPos, moveEndPos, moveDirection;
-    private float moveDistance, moveMagnitude;
-    private float currentMoveDistance;
-    private int moveStartIndex, moveEndIndex, totalMovePos;
 
     private void FixedUpdate()
     {
@@ -72,6 +73,7 @@ public class Obstacle : MonoBehaviour
 
         currentMoveDistance += moveSpeed * moveMagnitude * Time.fixedDeltaTime;
         transform.position = moveStartPos + currentMoveDistance * moveDirection;
+        transform.Rotate(0,0,rotationSpeed * Time.fixedDeltaTime);
 
     }
 
